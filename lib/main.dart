@@ -3,8 +3,60 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(App());
-  //runApp(MyApp());
+
+  //runApp(App());
+  runApp(AniApp());
+}
+
+class AniApp extends StatefulWidget{
+
+  @override
+  State<StatefulWidget> createState() => MyState();
+
+}
+class MyState extends State<AniApp> with SingleTickerProviderStateMixin{
+  Animation<double> animation;
+  AnimationController controller;
+  Tween tween=new Tween<double>(begin: -80.0,end: 400.0);
+
+
+  @override
+  void initState() {
+    super.initState();
+    controller = new AnimationController(
+      vsync: this,
+      duration: new Duration(seconds: 6)
+      );
+    animation= tween.animate(controller);
+    animation.addListener(() {
+      setState(() {
+      });
+    });
+
+    controller.repeat();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      child: Stack(
+        children: [
+          Positioned(child: Material(
+            child: Icon(
+              Icons.airport_shuttle,
+              textDirection: TextDirection.ltr,
+              size: 81.0,
+            ),
+          ),
+            left: animation.value,
+            top: 30.0,
+          ),
+        ],
+        textDirection: TextDirection.ltr,
+      ),
+    );
+  }
 }
 
 class App extends StatelessWidget{
