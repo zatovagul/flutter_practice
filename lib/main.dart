@@ -1,87 +1,121 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(
-      Directionality(
-        textDirection: TextDirection.ltr,
-      child: Container(
-        color: Color(0xFFFFFFFF),
-        child: Counter()
-      ),
-      ),
-  );
+  runApp(App());
   //runApp(MyApp());
 }
 
 class App extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: GestureDetector(
-        onTap: (){
-          print("You pressed me");
-        },
+    return Directionality(
+        textDirection: TextDirection.ltr,
         child: Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Color(0xFF17A2B8)
+          padding: EdgeInsets.symmetric(
+            vertical: 60.0,
+            horizontal: 20.0,
           ),
-          width:80.0 ,
-          height:80.0
-        )
-      )
+          color: Color(0xFFFFFFFF),
+          child: Content(),
+        ),
     );
   }
 
 }
-
+class Content extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Counter("Manchester United"),
+        Counter('Juventus'),
+        Counter('Milan'),
+      ],
+    );
+  }
+}
 class Counter extends StatefulWidget{
+  final String _name;
+  Counter(this._name);
+
   @override
   State<Counter> createState() => _CounterState();
-
 }
-
 class _CounterState extends State<Counter>{
-  int counter=0;
+  int count=0;
 
   @override
   Widget build(BuildContext context) {
-      return Center(
-        child: GestureDetector(
-          onTap: (){
+    return Container(
+      margin: EdgeInsets.only(bottom:10.0),
+      padding: EdgeInsets.all(4.0),
+      decoration: BoxDecoration(
+        border:Border.all(color:Color(0xFFFD6A02)),
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _CounterLabel(widget._name),
+          _CounterButton(count, onPressed: (){
             setState(() {
-              ++counter;
+              ++count;
             });
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xFF17A2B8),
-            ),
-            width: 80.0,
-            child: Center(
-              child: Text(
-                '$counter',
-                style: TextStyle(fontSize: 30.0)
-              ),
-            ),
+          })
+        ],
+      ),
+    );
+  }
+}
+class _CounterLabel extends StatelessWidget{
+  static const textStyle = TextStyle(
+    color: Color(0xFF000000),
+    fontSize: 26.0,
+  );
+  final String _label;
+
+  _CounterLabel(this._label);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      _label,
+      style: _CounterLabel.textStyle,
+    );
+  }
+}
+class _CounterButton extends StatelessWidget{
+  final _count;
+  final onPressed;
+  _CounterButton(this._count, {@required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: (){
+        onPressed();
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 6.0),
+        decoration: BoxDecoration(
+          color: Color(0xFFFD6A02),
+          borderRadius: BorderRadius.circular(4.0),
+        ),
+        child: Center(
+          child: Text(
+            '$_count',
+            style: TextStyle(fontSize: 20.0),
           ),
         ),
-      );
+      ),
+    );
   }
-
 }
 
-class MyStatelessWidget extends StatelessWidget{
-  final String name;
-  MyStatelessWidget(this.name);
 
-  @override
-  Widget build(BuildContext context) {
-      return Text("Hello, $name");
-  }
 
-}
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
